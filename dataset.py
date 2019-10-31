@@ -17,7 +17,7 @@ import os
 
 
 class CifarData:
-    def __init__( self, filenames, need_shuffle ):
+    def __init__(self, filenames, need_shuffle):
         all_data = []
         all_labels = []
         for filename in filenames:
@@ -29,7 +29,7 @@ class CifarData:
 
         self._data = self._data / 255.
 
-        self._labels = np.hstack( all_labels )
+        self._labels = np.hstack(all_labels)
 
         self._num_data = self._data.shape[0]
 
@@ -47,19 +47,19 @@ class CifarData:
             return data[b'data'], data[b'labels']
 
     def data_aug(self, img):
-        seq = iaa.SomeOf((1,3), [
+        seq = iaa.SomeOf((1, 3), [
             iaa.Fliplr(1.0),
             iaa.GaussianBlur(0.5),
             iaa.Sharpen(alpha=0.5)
-        ],random_order=True)
+        ], random_order=True)
         return seq.augment_image(img)
 
-    def _shffle_data( self ):
-        p = np.random.permutation( self._num_data )
+    def _shffle_data(self):
+        p = np.random.permutation(self._num_data)
         self._data = self._data[p]
         self._labels = self._labels[p]
 
-    def next_batch( self, batch_size):
+    def next_batch(self, batch_size):
         '''return batch_size example as a batch'''
 
         end_indictor = self._indicator + batch_size
@@ -77,4 +77,3 @@ class CifarData:
         batch_labels = self._labels[self._indicator:end_indictor]
         self._indicator = end_indictor
         return batch_data, batch_labels
-
