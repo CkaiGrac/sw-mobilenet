@@ -38,10 +38,10 @@ def main(args):
 
     reshape_x = tf.transpose(reshape_x, perm=[0, 2, 3, 1])
 
-    if os.path.exists('loss_acc.csv'):
-        os.remove('loss_acc.csv')
+    if os.path.exists('loss_acc_second.csv'):
+        os.remove('loss_acc_second.csv')
 
-    f = open('loss_acc.csv', 'a')
+    f = open('loss_acc_second.csv', 'a')
     f.write('loss,acc\n')
     f.close()
 
@@ -127,7 +127,7 @@ def main(args):
                     print('[Test ] acc: %4.5f' % (test_acc))
 
                 if (i + 1) % 100 == 0:
-                    f = open('loss_acc.csv', 'a')
+                    f = open('loss_acc_second.csv', 'a')
                     f.write('%4.5f,%.3f\n' % (loss_val, acc_val))
                     print('用于画图记录==> loss:  %4.5f, acc:  %.3f' %
                           (loss_val, acc_val))
