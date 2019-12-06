@@ -128,7 +128,7 @@ def main(args):
 
                 if (i + 1) % 100 == 0:
                     f = open('loss_acc.csv', 'a')
-                    f.write('%4.5f,%.3f,%d\n' % (loss_val, acc_val,i))
+                    f.write('%4.5f,%.3f,%d\n' % (loss_val, acc_val, i))
                     print('用于画图记录==> loss:  %4.5f, acc:  %.3f, epoch:  %d' %
                           (loss_val, acc_val, i))
                     f.close()

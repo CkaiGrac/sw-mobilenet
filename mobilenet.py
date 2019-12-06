@@ -1,10 +1,5 @@
 #!/usr/bin/env python
 # -*- coding_utf-8 -*-
-# ===========================
-#   Author      : LZH
-#   Time        : 2019-05-31
-#   Language    : Python3
-# ===========================
 
 from __future__ import absolute_import
 from __future__ import division
