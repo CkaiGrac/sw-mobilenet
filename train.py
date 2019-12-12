@@ -96,8 +96,8 @@ def main(args):
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        if args.load_pretrain == '1':
-            saver.restore(sess, args.pretrain_path)
+        if args.load_pretrain[0] == '1':
+            saver.restore(sess, args.pretrain_path[0])
             print('Load pre_train model from: %s ' % args.pretrain_path)
         print('Start Training...')
         for epoch in range(1, args.epochs[0]+1):
@@ -143,9 +143,9 @@ def print_summary(args):
     print('learning rate    : {}'.format(args.lr))
     print('Batch size       : {}'.format(args.batch_size[0]))
     print('Epoch            : {}'.format(args.epochs[0]))
-    if args.load_pretrain == '1':
+    if args.load_pretrain[0] == '1':
         print('load_pretrain    : YES')
-        print('pretrain_path    : {}'.format(args.pretrain_path))
+        print('pretrain_path    : {}'.format(args.pretrain_path[0]))
     else:
         print('load_pretrain    : No')
     print('*' * 30)
