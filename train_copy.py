@@ -135,7 +135,7 @@ def main(args):
                           (loss_val, acc_val, i))
                     f.close()
 
-            ckpt_file = "./ckpt/mobileNet_test_acc=%.4f.ckpt" % test_acc
+            ckpt_file = "./ckpt_hswish/mobileNet_test_acc=%.4f.ckpt" % test_acc
             print('Save model to: %s \n' % ckpt_file)
             saver.save(sess, ckpt_file)
 
@@ -182,7 +182,7 @@ def parse(argv):
                         type=str,
                         nargs='+',
                         help='the path of pretrain model',
-                        default='./ckpt/MobileNet.ckpt')
+                        default='./ckpt_hswish/MobileNet.ckpt')
 
     return parser.parse_args(argv)
 
