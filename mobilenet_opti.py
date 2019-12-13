@@ -14,7 +14,7 @@ class Mobilenet:
         self.trainable = trainable
         self.outputs = self.__build_network()
 
-    def hard_swish(x, name='hard_swish'):
+    def hard_swish(self, x, name='hard_swish'):
         with tf.name_scope(name):
             h_swish = x*tf.nn.relu6(x+3)/6
             return h_swish
@@ -35,7 +35,7 @@ class Mobilenet:
                                                   moving_variance_initializer=tf.ones_initializer(), training=self.trainable,
                                                   name='dw/bn')
             # relu = tf.nn.leaky_relu(bn_dw, 0.1)
-            h_swish = hard_swish(bn_dw)
+            h_swish = self.hard_swish(bn_dw)
             weight = tf.get_variable(name='weight', dtype=tf.float32, trainable=True,
                                      shape=(1, 1, dw_filter[2]*dw_filter[3], output_channel), initializer=tf.random_normal_initializer(stddev=0.01))
 
@@ -48,7 +48,7 @@ class Mobilenet:
                                                   training=self.trainable,
                                                   name='pt/bn')
             # return tf.nn.leaky_relu(bn_pt, 0.1)
-            return hard_swish(bn_pt)
+            return self.hard_swish(bn_pt)
 
     def __build_network(self):
 
@@ -58,7 +58,7 @@ class Mobilenet:
                                      kernel_size=(3, 3),
                                      strides=(2, 2),
                                      padding='same',
-                                     activation=hard_swish,   # tf.nn.relu,
+                                     activation=self.hard_swish,   # tf.nn.relu,
                                      name='conv1'
                                      )
             bn1 = tf.layers.batch_normalization(conv1, beta_initializer=tf.zeros_initializer(),
