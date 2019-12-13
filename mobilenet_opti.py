@@ -67,7 +67,7 @@ class Mobilenet:
                                                 moving_variance_initializer=tf.ones_initializer(), training=self.trainable,
                                                 name='bn')
             x = self.separable_conv_block(input=bn1, dw_filter=(3, 3, 32, 1), output_channel=64,
-                                          strides=(1, 1, 1, 1), name="spearable_1")
+                                          strides=(1, 2, 2, 1), name="spearable_1")
 
             x = self.separable_conv_block(input=x, dw_filter=(3, 3, 64, 1), output_channel=128,
                                           strides=(1, 2, 2, 1), name="spearable_2")
@@ -81,19 +81,30 @@ class Mobilenet:
             x = self.separable_conv_block(input=x, dw_filter=(3, 3, 256, 1), output_channel=256,
                                           strides=(1, 1, 1, 1), name="spearable_5")
             route1 = x
-
+            #opti
             x = self.separable_conv_block(input=x, dw_filter=(3, 3, 256, 1), output_channel=512,
                                           strides=(1, 2, 2, 1), name="spearable_6")
 
-            for i in range(5):
-                x = self.separable_conv_block(input=x, dw_filter=(3, 3, 512, 1), output_channel=512,
-                                              strides=(1, 1, 1, 1), name="spearable_%d" % (i + 7))
+            x = self.separable_conv_block(input=x, dw_filter=(3, 3, 512, 1), output_channel=512,
+                                          strides=(1, 1, 1, 1), name="spearable_7")
+
+            x = self.separable_conv_block(input=x, dw_filter=(3, 3, 512, 1), output_channel=512,
+                                          strides=(1, 1, 1, 1), name="spearable_8")
+
+            x = self.separable_conv_block(input=x, dw_filter=(3, 3, 512, 1), output_channel=512,
+                                          strides=(1, 1, 1, 1), name="spearable_9")
+
+            x = self.separable_conv_block(input=x, dw_filter=(3, 3, 512, 1), output_channel=512,
+                                          strides=(1, 1, 1, 1), name="spearable_10")
+
+            # x = self.separable_conv_block(input=x, dw_filter=(3, 3, 512, 1), output_channel=512,
+            #                               strides=(1, 1, 1, 1), name="spearable_11")
             route2 = x
             x = self.separable_conv_block(input=x, dw_filter=(3, 3, 512, 1), output_channel=1024,
-                                          strides=(1, 2, 2, 1), name="spearable_12")
+                                          strides=(1, 1, 1, 1), name="spearable_11")
 
-            x = self.separable_conv_block(input=x, dw_filter=(3, 3, 1024, 1), output_channel=1024,
-                                          strides=(1, 1, 1, 1), name="spearable_13")
+            # x = self.separable_conv_block(input=x, dw_filter=(3, 3, 1024, 1), output_channel=1024,
+            #                               strides=(1, 1, 1, 1), name="spearable_13")
         return route1, route2, x
 
 
