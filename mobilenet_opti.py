@@ -58,7 +58,7 @@ class Mobilenet:
                                      kernel_size=(3, 3),
                                      strides=(2, 2),
                                      padding='same',
-                                     activation=hard_swish   # tf.nn.relu,
+                                     activation=hard_swish,   # tf.nn.relu,
                                      name='conv1'
                                      )
             bn1 = tf.layers.batch_normalization(conv1, beta_initializer=tf.zeros_initializer(),
