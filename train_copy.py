@@ -43,7 +43,7 @@ def main(args):
         os.remove('loss_acc.csv')
 
     f = open('loss_acc.csv', 'a')
-    f.write('loss,acc,epoch\n')
+    f.write('loss,acc,test_loss,test_acc\n')
     f.close()
 
     with tf.variable_scope("MobileNet"):
@@ -116,23 +116,25 @@ def main(args):
                 if (i + 1) % 1000 == 0:
                     print('[Train] Epoch: %d Step: %d, loss: %4.5f, acc: %.3f' % (
                         epoch, i + 1, loss_val, acc_val))
-                if (i + 1) % 2000 == 0:
                     test_data = CifarData(test_filename, False)
                     test_acc_sum = []
+                    test_loss_sum = []
                     for j in range(100):
                         test_batch_data, test_batch_labels = test_data.next_batch(
                             args.batch_size[0])
-                        test_acc_val = sess.run([accuracy],
-                                                feed_dict={x: test_batch_data, y_true: test_batch_labels, is_train: False})
+                        test_loss_val, test_acc_val = sess.run([loss, accuracy],
+                                                               feed_dict={x: test_batch_data, y_true: test_batch_labels, is_train: False})
                         test_acc_sum.append(test_acc_val)
-                    test_acc = np.mean(test_acc_sum)
-                    print('[Test ] acc: %4.5f' % (test_acc))
+                        test_loss_sum.append(test_loss_val)
 
-                if (i + 1) % 100 == 0:
+                    test_acc = np.mean(test_acc_sum)
+                    test_loss = np.mean(test_loss_sum)
+                    print('[Test ] loss: %4.5f acc: %4.5f' %
+                          (test_loss, test_acc))
+
                     f = open('loss_acc.csv', 'a')
-                    f.write('%4.5f,%.3f,%d\n' % (loss_val, acc_val, i))
-                    print('用于画图记录==> loss:  %4.5f, acc:  %.3f, epoch:  %d' %
-                          (loss_val, acc_val, i))
+                    f.write('%4.5f,%.3f,%4.5f,%4.5f\n' %
+                            (loss_val, acc_val, test_loss, test_acc))
                     f.close()
 
             ckpt_file = "./ckpt_hswish/mobileNet_test_acc=%.4f.ckpt" % test_acc
