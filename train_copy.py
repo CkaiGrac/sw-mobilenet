@@ -62,6 +62,10 @@ def main(args):
                                             moving_variance_initializer=tf.ones_initializer(), training=is_train,
                                             name='bn1')
         relu1 = tf.nn.leaky_relu(bn1, 0.1)
+<<<<<<< HEAD
+=======
+        # h_swish = hard_swish(bn1)
+>>>>>>> 3355c8353d9abbf42ec155efa722a1ea29fc4c17
 
         dense2 = tf.layers.dense(inputs=relu1, units=10,
                                  kernel_initializer=tf.random_normal_initializer(stddev=0.01), trainable=True, name="dense2")
