@@ -104,11 +104,7 @@ class Mobilenet:
                                           strides=(1, 1, 1, 1), name="spearable_11")
             route2 = x
             x = self.separable_conv_block(input=x, dw_filter=(3, 3, 512, 1), output_channel=1024,
-<<<<<<< HEAD
                                           strides=(1, 2, 2, 1), name="spearable_12")
-=======
-                                          strides=(1, 1, 1, 1), name="spearable_12")
->>>>>>> 3355c8353d9abbf42ec155efa722a1ea29fc4c17
 
             x = self.separable_conv_block(input=x, dw_filter=(3, 3, 1024, 1), output_channel=1024,
                                           strides=(1, 1, 1, 1), name="spearable_13")
