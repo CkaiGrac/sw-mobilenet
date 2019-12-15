@@ -48,7 +48,10 @@ class Mobilenet:
                                                   training=self.trainable,
                                                   name='pt/bn')
             # return tf.nn.leaky_relu(bn_pt, 0.1)
-            return self.hard_swish(bn_pt)
+            if output_channel >= 512:
+                return self.hard_swish(bn_pt)
+            else:
+                return tf.nn.leaky_relu(bn_pt, 0.1)
 
     def __build_network(self):
 
@@ -67,7 +70,7 @@ class Mobilenet:
                                                 moving_variance_initializer=tf.ones_initializer(), training=self.trainable,
                                                 name='bn')
             x = self.separable_conv_block(input=bn1, dw_filter=(3, 3, 32, 1), output_channel=64,
-                                          strides=(1, 2, 2, 1), name="spearable_1")
+                                          strides=(1, 1, 1, 1), name="spearable_1")
 
             x = self.separable_conv_block(input=x, dw_filter=(3, 3, 64, 1), output_channel=128,
                                           strides=(1, 2, 2, 1), name="spearable_2")
@@ -97,14 +100,14 @@ class Mobilenet:
             x = self.separable_conv_block(input=x, dw_filter=(3, 3, 512, 1), output_channel=512,
                                           strides=(1, 1, 1, 1), name="spearable_10")
 
-            # x = self.separable_conv_block(input=x, dw_filter=(3, 3, 512, 1), output_channel=512,
-            #                               strides=(1, 1, 1, 1), name="spearable_11")
+            x = self.separable_conv_block(input=x, dw_filter=(3, 3, 512, 1), output_channel=512,
+                                          strides=(1, 1, 1, 1), name="spearable_11")
             route2 = x
             x = self.separable_conv_block(input=x, dw_filter=(3, 3, 512, 1), output_channel=1024,
-                                          strides=(1, 1, 1, 1), name="spearable_11")
+                                          strides=(1, 2, 2, 1), name="spearable_12")
 
             x = self.separable_conv_block(input=x, dw_filter=(3, 3, 1024, 1), output_channel=1024,
-                                          strides=(1, 1, 1, 1), name="spearable_12")
+                                          strides=(1, 1, 1, 1), name="spearable_13")
         return route1, route2, x
 
 
