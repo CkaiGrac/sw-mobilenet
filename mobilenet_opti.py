@@ -34,24 +34,35 @@ class Mobilenet:
                                                   moving_mean_initializer=tf.zeros_initializer(),
                                                   moving_variance_initializer=tf.ones_initializer(), training=self.trainable,
                                                   name='dw/bn')
-            # relu = tf.nn.leaky_relu(bn_dw, 0.1)
-            # h_swish = self.hard_swish(bn_dw)
-            weight = tf.get_variable(name='weight', dtype=tf.float32, trainable=True,
-                                     shape=(1, 1, dw_filter[2]*dw_filter[3], output_channel), initializer=tf.random_normal_initializer(stddev=0.01))
-
-            conv = tf.nn.conv2d(input=bn_dw, filter=weight, strides=[
-                                1, 1, 1, 1], padding="SAME", name="conv/s1")
-            bn_pt = tf.layers.batch_normalization(conv, beta_initializer=tf.zeros_initializer(),
-                                                  gamma_initializer=tf.ones_initializer(),
-                                                  moving_mean_initializer=tf.zeros_initializer(),
-                                                  moving_variance_initializer=tf.ones_initializer(),
-                                                  training=self.trainable,
-                                                  name='pt/bn')
-            # return tf.nn.leaky_relu(bn_pt, 0.1)
             if output_channel >= 512:
-                return self.hard_swish(bn_pt)
+                h_swish = self.hard_swish(bn_dw)
+                weight = tf.get_variable(name='weight', dtype=tf.float32, trainable=True,
+                                         shape=(1, 1, dw_filter[2]*dw_filter[3], output_channel), initializer=tf.random_normal_initializer(stddev=0.01))
+
+                conv = tf.nn.conv2d(input=h_swish, filter=weight, strides=[
+                    1, 1, 1, 1], padding="SAME", name="conv/s1")
+
+                bn_pt = tf.layers.batch_normalization(conv, beta_initializer=tf.zeros_initializer(),
+                                                      gamma_initializer=tf.ones_initializer(),
+                                                      moving_mean_initializer=tf.zeros_initializer(),
+                                                      moving_variance_initializer=tf.ones_initializer(),
+                                                      training=self.trainable,
+                                                      name='pt/bn')
+                return bn_pt
             else:
-                return tf.nn.leaky_relu(bn_pt, 0.1)
+                relu = tf.nn.leaky_relu(bn_dw, 0.1)
+                weight = tf.get_variable(name='weight', dtype=tf.float32, trainable=True,
+                                         shape=(1, 1, dw_filter[2]*dw_filter[3], output_channel), initializer=tf.random_normal_initializer(stddev=0.01))
+
+                conv = tf.nn.conv2d(input=relu, filter=weight, strides=[
+                    1, 1, 1, 1], padding="SAME", name="conv/s1")
+                bn_pt = tf.layers.batch_normalization(conv, beta_initializer=tf.zeros_initializer(),
+                                                      gamma_initializer=tf.ones_initializer(),
+                                                      moving_mean_initializer=tf.zeros_initializer(),
+                                                      moving_variance_initializer=tf.ones_initializer(),
+                                                      training=self.trainable,
+                                                      name='pt/bn')
+                return bn_pt
 
     def __build_network(self):
 
