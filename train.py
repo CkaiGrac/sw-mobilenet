@@ -42,7 +42,7 @@ def main(args):
         os.remove('loss_acc.csv')
 
     f = open('loss_acc.csv', 'a')
-    f.write('loss,acc,epoch\n')
+    f.write('loss,acc,test_loss,test_acc\n')
     f.close()
 
     with tf.variable_scope("MobileNet"):
