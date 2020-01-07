@@ -4,13 +4,13 @@
 import tensorflow as tf
 from mobilenet import Mobilenet
 
-pb_file = "./mobilenet_normal.pb"
-ckpt_file = "./ckpt/mobileNet_test_acc=0.7056.ckpt"
+pb_file = "./mobilenet_prelu.pb"
+ckpt_file = "./ckpt_prelu/mobileNet_test_acc=0.7619.ckpt"
 output_node_names = ["MobileNet/prediction"]
 
 
 saver = tf.train.import_meta_graph(
-    './ckpt/mobileNet_test_acc=0.7056.ckpt.meta', clear_devices=True)
+    './ckpt_prelu/mobileNet_test_acc=0.7619.ckpt.meta', clear_devices=True)
 graph = tf.get_default_graph()
 input_graph_def = graph.as_graph_def()
 
