@@ -27,8 +27,8 @@ tf.reset_default_graph()
 slim = tf.contrib.slim
 
 
-def prelu(_x):
-    alphas = tf.get_variable('alpha', _x.get_shape()[-1],
+def prelu(_x, name):
+    alphas = tf.get_variable(name, _x.get_shape()[-1],
                              initializer=tf.constant_initializer(0.0),
                              dtype=tf.float32)
     pos = tf.nn.relu6(_x)
@@ -74,7 +74,7 @@ def main(args):
                                             moving_mean_initializer=tf.zeros_initializer(),
                                             moving_variance_initializer=tf.ones_initializer(), training=is_train,
                                             name='bn1')
-        relu1 = prelu(bn1)
+        relu1 = prelu(bn1, "alpha3")
 
         dense2 = tf.layers.dense(inputs=relu1, units=10,
                                  kernel_initializer=tf.random_normal_initializer(stddev=0.01), trainable=True, name="dense2")

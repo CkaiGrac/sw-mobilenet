@@ -14,8 +14,8 @@ class Mobilenet:
 
     """
 
-    def prelu(self, _x):
-        alphas = tf.get_variable('alpha', _x.get_shape()[-1],
+    def prelu(self, _x, name):
+        alphas = tf.get_variable(name, _x.get_shape()[-1],
                                  initializer=tf.constant_initializer(0.0),
                                  dtype=tf.float32)
         pos = tf.nn.relu6(_x)
@@ -48,7 +48,7 @@ class Mobilenet:
                                                   moving_mean_initializer=tf.zeros_initializer(),
                                                   moving_variance_initializer=tf.ones_initializer(), training=self.trainable,
                                                   name='dw/bn')
-            myprelu = self.prelu(bn_dw)
+            myprelu = self.prelu(bn_dw, "alpha1")
             weight = tf.get_variable(name='weight', dtype=tf.float32, trainable=True,
                                      shape=(1, 1, dw_filter[2]*dw_filter[3], output_channel), initializer=tf.random_normal_initializer(stddev=0.01))
 
@@ -60,7 +60,7 @@ class Mobilenet:
                                                   moving_variance_initializer=tf.ones_initializer(),
                                                   training=self.trainable,
                                                   name='pt/bn')
-            return self.prelu(bn_pt)
+            return self.prelu(bn_pt, "alpha2")
 
     def __build_network(self):
 
