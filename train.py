@@ -111,7 +111,7 @@ def main(args):
                 loss_val, acc_val, _, predict1, yt = sess.run([loss, accuracy, train_op, predict, y_true],
                                                               feed_dict={x: batch_data, y_true: batch_labels, is_train: True})
 
-                if (i + 1) % 1000 == 0:
+                if (i + 1) % 100 == 0:
                     print('[Train] Epoch: %d Step: %d, loss: %4.5f, acc: %.3f' % (
                         epoch, i + 1, loss_val, acc_val))
                     test_data = CifarData(test_filename, False)
