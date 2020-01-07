@@ -60,7 +60,7 @@ class Mobilenet:
                                                   moving_variance_initializer=tf.ones_initializer(),
                                                   training=self.trainable,
                                                   name='pt/bn')
-            return prelu(bn_pt)
+            return self.prelu(bn_pt)
 
     def __build_network(self):
 
