@@ -40,7 +40,7 @@ class Mobilenet:
                                                   moving_mean_initializer=tf.zeros_initializer(),
                                                   moving_variance_initializer=tf.ones_initializer(), training=self.trainable,
                                                   name='dw/bn')
-            relu = tf.nn.relu6(bn_dw)
+            relu = tf.nn.relu(bn_dw)
             weight = tf.get_variable(name='weight', dtype=tf.float32, trainable=True,
                                      shape=(1, 1, dw_filter[2]*dw_filter[3], output_channel), initializer=tf.random_normal_initializer(stddev=0.01))
 
@@ -52,7 +52,7 @@ class Mobilenet:
                                                   moving_variance_initializer=tf.ones_initializer(),
                                                   training=self.trainable,
                                                   name='pt/bn')
-            return tf.nn.relu6(bn_pt)
+            return tf.nn.relu(bn_pt)
 
     def __build_network(self):
 
