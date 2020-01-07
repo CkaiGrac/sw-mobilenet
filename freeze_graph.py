@@ -2,16 +2,16 @@
 # coding=utf-8
 
 import tensorflow as tf
-from mobilenet import MobileNet
+from mobilenet import Mobilenet
 
-pb_file = "./mobilenet.pb"
-ckpt_file = "./ckpt/mobileNet_test_loss=0.2681.ckpt-2"
+pb_file = "./mobilenet_normal.pb"
+ckpt_file = "./ckpt/mobileNet_test_acc=0.7056.ckpt"
 output_node_names = ["input/input_data", "transfer_learning/prediction", "transfer_learning/sqz"]
 
 with tf.name_scope('input'):
     input_data = tf.placeholder(dtype=tf.float32, shape=(None,224,224,3), name='input_data')
 
-sqz,predictions = MobileNet(input_data,is_train=False)
+sqz,predictions = Mobilenet(input_data,trainable=False)
 
 sess  = tf.Session(config=tf.ConfigProto(allow_soft_placement=True))
 saver = tf.train.Saver()
