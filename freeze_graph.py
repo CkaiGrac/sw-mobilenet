@@ -1,10 +1,8 @@
-#!/usr/bin/env python
-# -*- coding_utf-8 -*-
 #! /usr/bin/env python
 # coding=utf-8
 
 import tensorflow as tf
-from new_model import MobileNet
+from mobilenet import MobileNet
 
 pb_file = "./mobilenet.pb"
 ckpt_file = "./ckpt/mobileNet_test_loss=0.2681.ckpt-2"
