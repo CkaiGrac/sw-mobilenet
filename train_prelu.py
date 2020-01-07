@@ -47,10 +47,10 @@ def main(args):
 
     reshape_x = tf.transpose(reshape_x, perm=[0, 2, 3, 1])
 
-    if os.path.exists('loss_acc.csv'):
-        os.remove('loss_acc.csv')
+    if os.path.exists('loss_acc_prelu.csv'):
+        os.remove('loss_acc_prelu.csv')
 
-    f = open('loss_acc.csv', 'a')
+    f = open('loss_acc_prelu.csv', 'a')
     f.write('loss,acc,test_loss,test_acc\n')
     f.close()
 
@@ -139,12 +139,12 @@ def main(args):
                     print('[Test ] loss: %4.5f acc: %4.5f' %
                           (test_loss, test_acc))
 
-                    f = open('loss_acc.csv', 'a')
+                    f = open('loss_acc_prelu.csv', 'a')
                     f.write('%4.5f,%.3f,%4.5f,%4.5f\n' %
                             (loss_val, acc_val, test_loss, test_acc))
                     f.close()
 
-            ckpt_file = "./ckpt/mobileNet_test_acc=%.4f.ckpt" % test_acc
+            ckpt_file = "./ckpt_prelu/mobileNet_test_acc=%.4f.ckpt" % test_acc
             print('Save model to: %s \n' % ckpt_file)
             saver.save(sess, ckpt_file)
 
