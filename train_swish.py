@@ -69,9 +69,9 @@ def main(args):
                                             moving_mean_initializer=tf.zeros_initializer(),
                                             moving_variance_initializer=tf.ones_initializer(), training=is_train,
                                             name='bn1')
-        relu1 = tf.nn.relu(bn1)
+        swish = Swish(bn1)
 
-        dense2 = tf.layers.dense(inputs=relu1, units=10,
+        dense2 = tf.layers.dense(inputs=swish, units=10,
                                  kernel_initializer=tf.random_normal_initializer(stddev=0.01), trainable=True, name="dense2")
         sqz = tf.squeeze(dense2, [1, 2], name='sqz')
 
