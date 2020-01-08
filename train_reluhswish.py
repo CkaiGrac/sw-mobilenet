@@ -18,7 +18,7 @@ import argparse
 import tensorflow as tf
 import numpy as np
 from dataset import CifarData
-from mobilenet import Mobilenet
+from mobilenet_reluhswish import Mobilenet
 
 os.chdir(os.getcwd())
 
