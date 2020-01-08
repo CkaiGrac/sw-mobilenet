@@ -143,7 +143,7 @@ def main(args):
                             (loss_val, acc_val, test_loss, test_acc))
                     f.close()
 
-            ckpt_file = "./ckpt_reluswish/mobileNet_test_acc=%.4f.ckpt" % test_acc
+            ckpt_file = "./ckpt_reluhswish/mobileNet_test_acc=%.4f.ckpt" % test_acc
             print('Save model to: %s \n' % ckpt_file)
             saver.save(sess, ckpt_file)
 
