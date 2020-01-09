@@ -57,29 +57,24 @@ def main(args):
 
     with tf.variable_scope("MobileNet"):
 
-        #   the class Mobilenet will ouputs 3 variable, you should ignore the first two.
-        #   you are expect to get the ouput from Mobilenet backbone
-        #   and i use a avg_pooling and two fully connected layer, because i think the number of neural from 1024 to 10
-        #   has a big gap, that will lead to information loss, so i use a transition FC layer to
-        #   trainsit the information, and use leaky_relu to activate ouput from the first FC layer.
-
         _, _, output = Mobilenet(reshape_x, is_train).outputs
         avg_pooling = tf.nn.avg_pool(output, ksize=[1, 7, 7, 1], strides=[
                                      1, 1, 1, 1], padding="SAME", name="Avg_pooling")
 
-        dense1 = tf.layers.dense(inputs=avg_pooling, units=512, activation=None,
-                                 kernel_initializer=tf.random_normal_initializer(stddev=0.01), trainable=True, name="dense1")
+        dense1 = tf.layers.dense(inputs=avg_pooling, units=1024)
+        # dense1 = tf.layers.dense(inputs=avg_pooling, units=512, activation=None,
+        #                          kernel_initializer=tf.random_normal_initializer(stddev=0.01), trainable=True, name="dense1")
 
-        bn1 = tf.layers.batch_normalization(dense1, beta_initializer=tf.zeros_initializer(),
-                                            gamma_initializer=tf.ones_initializer(),
-                                            moving_mean_initializer=tf.zeros_initializer(),
-                                            moving_variance_initializer=tf.ones_initializer(), training=is_train,
-                                            name='bn1')
-        reluhswish = relu_h_swish(bn1, "reluhswish2")
+        # bn1 = tf.layers.batch_normalization(dense1, beta_initializer=tf.zeros_initializer(),
+        #                                     gamma_initializer=tf.ones_initializer(),
+        #                                     moving_mean_initializer=tf.zeros_initializer(),
+        #                                     moving_variance_initializer=tf.ones_initializer(), training=is_train,
+        #                                     name='bn1')
+        # reluhswish = relu_h_swish(bn1, "reluhswish2")
 
-        dense2 = tf.layers.dense(inputs=reluhswish, units=10,
-                                 kernel_initializer=tf.random_normal_initializer(stddev=0.01), trainable=True, name="dense2")
-        sqz = tf.squeeze(dense2, [1, 2], name='sqz')
+        # dense2 = tf.layers.dense(inputs=reluhswish, units=10,
+        #                          kernel_initializer=tf.random_normal_initializer(stddev=0.01), trainable=True, name="dense2")
+        sqz = tf.squeeze(dense1, [1, 2], name='sqz')
 
         prediction = tf.nn.softmax(sqz, name='prediction')
 
