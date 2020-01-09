@@ -14,12 +14,14 @@ class Mobilenet:
 
     """
 
-    def relu_h_swish(self, _x, name="reluhswish"):
+    def relu_h_swish(self, _x, name):
         with tf.name_scope(name):
-            if(_x > 0):
-                return tf.nn.relu6(_x)
-            if(_x <= 0):
-                return _x*tf.nn.relu6(_x+3)/6
+            alphas = tf.get_variable(name, _x.get_shape()[-1],
+                                     initializer=tf.constant_initializer(0.0),
+                                     dtype=tf.float32)
+            pos = tf.nn.relu6(_x)
+            neg = alphas*(_x*tf.nn.relu6(_x+3)/6)
+            return pos + neg
 
     def __init__(self, input, trainable):
         self.input = input
@@ -47,7 +49,7 @@ class Mobilenet:
                                                   moving_mean_initializer=tf.zeros_initializer(),
                                                   moving_variance_initializer=tf.ones_initializer(), training=self.trainable,
                                                   name='dw/bn')
-            reluhswish = self.relu_h_swish(bn_dw)
+            reluhswish = self.relu_h_swish(bn_dw,"reluhswish1")
             weight = tf.get_variable(name='weight', dtype=tf.float32, trainable=True,
                                      shape=(1, 1, dw_filter[2]*dw_filter[3], output_channel), initializer=tf.random_normal_initializer(stddev=0.01))
 
