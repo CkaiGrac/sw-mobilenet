@@ -27,16 +27,6 @@ tf.reset_default_graph()
 slim = tf.contrib.slim
 
 
-def relu_h_swish(_x, name):
-    with tf.name_scope(name):
-        alphas = tf.get_variable(name, _x.get_shape()[-1],
-                                 initializer=tf.constant_initializer(0.0),
-                                 dtype=tf.float32)
-        pos = tf.nn.relu6(_x)
-        neg = alphas*(_x*tf.nn.relu6(_x+3)/6)
-        return pos + neg
-
-
 def main(args):
     print_summary(args)
     x = tf.placeholder(dtype=tf.float32, shape=(None, 3072), name='input_data')
@@ -75,9 +65,9 @@ def main(args):
                                             moving_mean_initializer=tf.zeros_initializer(),
                                             moving_variance_initializer=tf.ones_initializer(), training=is_train,
                                             name='bn1')
-        reluhswish = relu_h_swish(bn1, "reluhswish2")
+        relu = tf.nn.leaky_relu(bn1, 0.1)
 
-        dense2 = tf.layers.dense(inputs=reluhswish, units=10,
+        dense2 = tf.layers.dense(inputs=relu, units=10,
                                  kernel_initializer=tf.random_normal_initializer(stddev=0.01), trainable=True, name="dense2")
         sqz = tf.squeeze(dense2, [1, 2], name='sqz')
 
